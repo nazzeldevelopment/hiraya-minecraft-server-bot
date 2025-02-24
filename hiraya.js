@@ -9,12 +9,10 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Route para sa Render health check
 app.get("/", (req, res) => {
   res.send("HirayaCraftBot is running! ✅");
 });
 
-// Start Express Server
 app.listen(PORT, () => {
   console.log(`✅ Express server running on port ${PORT}`);
 });
@@ -25,7 +23,7 @@ class HirayaCraftBot {
       intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
+        GatewayIntentBits.MessageContent,
       ],
     });
 
@@ -36,18 +34,22 @@ class HirayaCraftBot {
   }
 
   loadCommands() {
-    const commandFiles = fs.readdirSync(path.join(__dirname, "src", "commands")).filter(file => file.endsWith(".js"));
+    const commandPath = path.join(__dirname, "src", "commands");
+    const commandFiles = fs.readdirSync(commandPath).filter(file => file.endsWith(".js"));
+
     for (const file of commandFiles) {
-      const command = require(`./src/commands/${file}`);
+      const command = require(`${commandPath}/${file}`);
       this.commands.set(command.name, command);
     }
     console.log(`✅ Loaded ${this.commands.size} commands.`);
   }
 
   loadEvents() {
-    const eventFiles = fs.readdirSync(path.join(__dirname, "src", "events")).filter(file => file.endsWith(".js"));
+    const eventPath = path.join(__dirname, "src", "events");
+    const eventFiles = fs.readdirSync(eventPath).filter(file => file.endsWith(".js"));
+
     for (const file of eventFiles) {
-      const event = require(`./src/events/${file}`);
+      const event = require(`${eventPath}/${file}`);
       this.client.on(event.name, (...args) => event.execute(...args, this.client));
     }
   }
@@ -66,7 +68,7 @@ class HirayaCraftBot {
 
       const args = message.content.slice(this.prefix.length).trim().split(/ +/);
       const commandName = args.shift().toLowerCase();
-      
+
       if (!this.commands.has(commandName)) return;
 
       try {
@@ -83,9 +85,11 @@ class HirayaCraftBot {
       this.client.user.setActivity("Minecraft Server | H!help", { type: "PLAYING" });
     });
 
-    this.client.login(process.env.DISCORD_TOKEN).catch(error => {
+    try {
+      await this.client.login(process.env.DISCORD_TOKEN);
+    } catch (error) {
       console.error("❌ Failed to login to Discord:", error);
-    });
+    }
   }
 }
 
