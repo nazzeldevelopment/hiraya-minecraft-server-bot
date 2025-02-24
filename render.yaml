@@ -3,10 +3,10 @@ services:
     name: HirayaCraftBot
     env: node
     plan: free
-    region: singapore  # Mas maganda kung malapit sa Asia para sa lower latency
-    buildCommand: |
-      npm install
-    startCommand: node index.js
+    runtime: node
+    nodeVersion: 20
+    buildCommand: npm install
+    startCommand: node hiraya.js
     envVars:
       - key: DISCORD_TOKEN
         sync: false
@@ -18,5 +18,5 @@ services:
         sync: false
       - key: PREFIX
         sync: false
-    runtime: node  # Siguraduhin na Node.js ang environment
-    nodeVersion: 20  # Gumamit ng Node.js 20
+      - key: PORT
+        sync: false
