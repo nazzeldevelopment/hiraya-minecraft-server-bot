@@ -13,6 +13,14 @@ async function connectRcon() {
         });
 
         console.log("✅ RCON connected successfully!");
+
+        // Auto-reconnect kapag nadisconnect
+        rcon.on("end", () => {
+            console.warn("⚠️ RCON connection lost! Reconnecting...");
+            rcon = null; // I-reset ang instance
+            setTimeout(connectRcon, 5000); // Subukang muli pagkatapos ng 5 segundo
+        });
+
         return rcon;
     } catch (error) {
         console.error("❌ Failed to connect to RCON:", error);
@@ -21,9 +29,9 @@ async function connectRcon() {
 }
 
 async function sendRconCommand(command) {
-    if (!rcon) throw new Error("❌ RCON is not connected!");
-    
     try {
+        if (!rcon) await connectRcon(); // Auto-connect kung disconnected
+        
         const response = await rcon.send(command);
         console.log(`📡 RCON Command Sent: ${command}`);
         return response;
