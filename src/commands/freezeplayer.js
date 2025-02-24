@@ -2,7 +2,7 @@ module.exports = {
     name: 'freezeplayer',
     description: 'I-freeze ang isang player (hindi makagalaw).',
     async execute(message, args) {
-        if (!args[0]) return message.reply('⚠️ Gamitin: `!freezeplayer <player>`');
+        if (!args[0]) return message.reply('⚠️ Gamitin: `H!freezeplayer <player>`');
 
         try {
             const player = args[0];
