@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: HirayaCraftBot
+    env: node
+    plan: free  # O palitan ng 'starter' kung may budget ka
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: DISCORD_TOKEN
+        sync: false
+      - key: RCON_HOST
+        sync: false
+      - key: RCON_PORT
+        sync: false
+      - key: RCON_PASSWORD
+        sync: false
+      - key: PREFIX
+        sync: false
