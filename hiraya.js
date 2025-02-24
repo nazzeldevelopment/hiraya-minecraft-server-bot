@@ -1,8 +1,23 @@
 require("dotenv").config();
+const express = require("express"); // ✅ Express for Render
 const { Client, GatewayIntentBits, Collection } = require("discord.js");
 const { connectRcon } = require("./src/utils/rconUtils");
 const fs = require("fs");
 const path = require("path");
+
+// ✅ Express Server Setup
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Route para sa Render health check
+app.get("/", (req, res) => {
+  res.send("HirayaCraftBot is running! ✅");
+});
+
+// Start Express Server
+app.listen(PORT, () => {
+  console.log(`✅ Express server running on port ${PORT}`);
+});
 
 class HirayaCraftBot {
   constructor() {
