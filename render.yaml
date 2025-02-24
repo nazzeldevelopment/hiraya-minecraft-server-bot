@@ -2,9 +2,11 @@ services:
   - type: web
     name: HirayaCraftBot
     env: node
-    plan: free  # O palitan ng 'starter' kung may budget ka
+    plan: free
+    runtime: node
+    nodeVersion: 20
     buildCommand: npm install
-    startCommand: npm start
+    startCommand: node hiraya.js
     envVars:
       - key: DISCORD_TOKEN
         sync: false
@@ -15,4 +17,6 @@ services:
       - key: RCON_PASSWORD
         sync: false
       - key: PREFIX
+        sync: false
+      - key: PORT
         sync: false
