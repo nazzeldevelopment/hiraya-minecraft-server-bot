@@ -1,4 +1,4 @@
-const { Rcon } = require("rcon-client");
+const { RCON } = require("minecraft-rcon-client");
 
 let rcon = null;
 
@@ -6,9 +6,9 @@ async function connectRcon() {
     if (rcon) return rcon; // Huwag mag-reconnect kung connected na
 
     try {
-        rcon = await Rcon.connect({
+        rcon = await RCON.connect({
             host: process.env.RCON_HOST,
-            port: process.env.RCON_PORT,
+            port: process.env.RCON_PORT, // Diretso na sa .env
             password: process.env.RCON_PASSWORD
         });
 
@@ -31,7 +31,7 @@ async function connectRcon() {
 async function sendRconCommand(command) {
     try {
         if (!rcon) await connectRcon(); // Auto-connect kung disconnected
-        
+
         const response = await rcon.send(command);
         console.log(`📡 RCON Command Sent: ${command}`);
         return response;
