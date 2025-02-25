@@ -28,7 +28,7 @@ class HirayaCraftBot {
       ],
     });
 
-    this.prefix = process.env.PREFIX || "H!";
+    this.prefix = process.env.PREFIX;
     this.commands = new Collection();
     this.loadCommands();
     this.loadEvents();
